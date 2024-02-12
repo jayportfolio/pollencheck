@@ -1,6 +1,7 @@
 package com.jport.pollencheck.rest;
 
 import com.jport.pollencheck.common.Weather;
+import com.jport.pollencheck.common.WeatherMocker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +17,8 @@ public class WeatherController {
     private Weather myWeather;
 
     @Autowired
-//    public WeatherController(@Qualifier("pollen") Weather theWeather) {
-    public WeatherController(@Qualifier("weatherMocker") Weather theWeather) {
+    public WeatherController(@Qualifier("pollen") Weather theWeather) {
+//    public WeatherController(@Qualifier("weatherMocker") Weather theWeather) {
         System.out.println("In constructor: " + getClass().getSimpleName());
         myWeather = theWeather;
     }
@@ -33,12 +34,19 @@ public class WeatherController {
         return myWeather.getPollen();
     }
 
+    @GetMapping("/todayCached")
+    public Map<String, Object> getTodaysPollenCached() {
+        WeatherMocker weatherMocker = new WeatherMocker();
+        return weatherMocker.getPollen();
+    }
+
     @GetMapping
     public Map<String, String> sayHello() {
         HashMap<String, String> map = new HashMap<>();
         map.put("key", "value");
         map.put("foo", "bar");
-        map.put("aa", "bb");
+        map.put("this", "is");
+        map.put("a", "test");
         return map;
     }
 }
